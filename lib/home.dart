@@ -11,11 +11,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*
     final user = Provider.of<UserModel>(context);
     if (!user.isNull) {
       print('Homescreen ---------- ${user.user.email}');
     }
-
+    */
     return Scaffold(
       appBar: AppBar(
         actions: [
