@@ -1,3 +1,4 @@
+import 'package:complete/model/counter_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
@@ -66,6 +67,12 @@ class AuthGate extends StatelessWidget {
             );
           }
           User? auth = snapshot.data;
+          print('AuthGate --------- increment counter ' +
+              context.read<Counter>().count.toString());
+          context.read<Counter>().increment();
+
+          print('AuthGate --------- increment counter ' +
+              context.read<Counter>().count.toString());
 
           print('-------------------------------${auth!.displayName}');
           print('-------------------------------${auth.email}');

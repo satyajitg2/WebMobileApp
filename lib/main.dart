@@ -1,3 +1,4 @@
+import 'package:complete/model/counter_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +18,8 @@ void main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
-      create: (_) {
-        UserModel();
-      },
-    )
+      create: (context) => UserModel(),
+    ),
+    ChangeNotifierProvider(create: (context) => Counter())
   ], child: const MyApp()));
 }
