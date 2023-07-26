@@ -61,11 +61,14 @@ class HomeScreen extends StatelessWidget {
                 2: FixedColumnWidth(64),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: const <TableRow>[
+              children: <TableRow>[
                 TableRow(children: <Widget>[
-                  Text(
-                    'Hello Satyajit',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                  Consumer<UserModel>(
+                    builder: (context, value, child) => Text(
+                      'Hello ${value.user.displayName} ${value.user.email}',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                    ),
                   )
                 ])
               ],

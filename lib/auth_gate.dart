@@ -15,6 +15,7 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserModel user = Provider.of<UserModel>(context);
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -67,9 +68,11 @@ class AuthGate extends StatelessWidget {
             );
           }
           User? auth = snapshot.data;
+          user.setUser(auth);
+
           print('AuthGate --------- increment counter ' +
               context.read<Counter>().count.toString());
-          context.read<Counter>().increment();
+          //context.read<Counter>().increment();
 
           print('AuthGate --------- increment counter ' +
               context.read<Counter>().count.toString());
@@ -78,15 +81,6 @@ class AuthGate extends StatelessWidget {
           print('-------------------------------${auth.email}');
 
           return const HomeScreen();
-          /*return ProxyProvider0(
-              /*create: (_) {
-                UserModel(
-                    auth); //Says DON'T do this https://pub.dev/packages/provider
-              },*/
-              update: (context, value) {
-                UserModel(auth);
-              },
-              child: const HomeScreen());*/
         });
   }
 }
