@@ -7,8 +7,7 @@ import 'package:provider/provider.dart';
 import 'home.dart';
 import 'model/user_model.dart';
 
-const CLIENT_ID =
-    '174830733343-3rqgqikb4u957johlg07ai5e0o3d80h7.apps.googleusercontent.com';
+const CLIENT_ID = 'client_id';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
