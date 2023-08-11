@@ -1,13 +1,81 @@
-import 'dart:js_interop';
+import 'dart:convert';
 
+import 'package:complete/http_api/rows.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 import 'model/user_model.dart';
 
-class HomeScreen extends StatelessWidget {
+const String DB_REST_URL =
+    'be420919-f9f0-4654-a712-d47513bce79f-asia-south1.apps.astra.datastax.com';
+const String DB_REST_URL_API_PATH =
+    '/api/rest/v2/keyspaces/stargate/satyajit_table/rows';
+
+const String full_url =
+    'https://be420919-f9f0-4654-a712-d47513bce79f-asia-south1.apps.astra.datastax.com/api/rest/v2/keyspaces/stargate/satyajit_table/rows';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<Rows> _rowsData;
+
+  @override
+  void initState() {
+    super.initState();
+    print('HOMESCREEN - initState()');
+    _rowsData = fetchRows();
+  }
+
+  Future<Rows> fetchRows() async {
+    //Future<http.Response> response;
+    print('HOMESCREEN - fetchRows');
+    Map<String, String>? headervars = {
+      "Content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "X-Cassandra-Token": "Secret"
+    };
+
+    final uri = Uri.https(DB_REST_URL, DB_REST_URL_API_PATH);
+
+    print('Parsed well');
+
+    Response response = new Response('body', 400);
+    try {
+      //NOTE: This call fails in Chrome device but works in Linux device.
+      //To Run on Chrome do these steps below along with header to access-allow-control
+      //1- Go to flutter\bin\cache and remove a file named: flutter_tools.stamp
+      //2- Go to flutter\packages\flutter_tools\lib\src\web and open the file chrome.dart.
+      //3- Find '--disable-extensions'
+      //4- Add '--disable-web-security'
+
+      final responseTest = await http.get(uri, headers: headervars);
+      final body = responseTest.body;
+      print('Body ' + body);
+    } on Exception catch (e) {
+      print('HOMESCREEN http exception' + e.toString());
+    }
+    print('HOMESCREEN - fetchRows - response' + response.toString());
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print('HOMESCREEN - fetchRows - response statusCode 200' + response.body);
+      return Rows.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      print('HOMESCREEN - fetchRows - failed to load');
+      throw Exception('Failed to load album');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +85,9 @@ class HomeScreen extends StatelessWidget {
       print('Homescreen ---------- ${user.user.email}');
     }
     */
+    //var response = fetchRows();
+    //print('http response ---------------------' + response.toString());
+
     return Scaffold(
       appBar: AppBar(
         actions: [
