@@ -48,7 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     print('Parsed well');
 
-    Response response = new Response('body', 400);
+    Response responseTest = new Response('body', 400);
+    bool isMatch = false;
     try {
       //NOTE: This call fails in Chrome device but works in Linux device.
       //To Run on Chrome do these steps below along with header to access-allow-control
@@ -57,18 +58,24 @@ class _HomeScreenState extends State<HomeScreen> {
       //3- Find '--disable-extensions'
       //4- Add '--disable-web-security'
 
-      final responseTest = await http.get(uri, headers: headervars);
-      final body = responseTest.body;
-      print('Body ' + body);
+      responseTest = await http.get(uri, headers: headervars);
+      //final body = responseTest.body;
+
+      print('Body ' +
+          responseTest.body +
+          ' Status Code' +
+          responseTest.statusCode.toString());
+      isMatch = (responseTest.statusCode == 200);
+      print('StatusCode matches ' + isMatch.toString());
     } on Exception catch (e) {
-      print('HOMESCREEN http exception' + e.toString());
+      print('Exception while http.get' + e.toString());
     }
-    print('HOMESCREEN - fetchRows - response' + response.toString());
-    if (response.statusCode == 200) {
+    if (isMatch) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      print('HOMESCREEN - fetchRows - response statusCode 200' + response.body);
-      return Rows.fromJson(jsonDecode(response.body));
+      print('HOMESCREEN - fetchRows - response statusCode 200' +
+          responseTest.body);
+      return Rows.fromJson(jsonDecode(responseTest.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -79,15 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    final user = Provider.of<UserModel>(context);
-    if (!user.isNull) {
-      print('Homescreen ---------- ${user.user.email}');
-    }
-    */
-    //var response = fetchRows();
-    //print('http response ---------------------' + response.toString());
-
     return Scaffold(
       appBar: AppBar(
         actions: [

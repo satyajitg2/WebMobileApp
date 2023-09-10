@@ -14,7 +14,6 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserModel user = Provider.of<UserModel>(context);
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -66,20 +65,9 @@ class AuthGate extends StatelessWidget {
               },
             );
           }
-          User? auth = snapshot.data;
-          user.setUser(auth);
-
-          print('AuthGate --------- increment counter ' +
-              context.read<Counter>().count.toString());
-          //context.read<Counter>().increment();
-
-          print('AuthGate --------- increment counter ' +
-              context.read<Counter>().count.toString());
-
-          print('-------------------------------${auth!.displayName}');
-          print('-------------------------------${auth.email}');
-
-          return const HomeScreen();
+          return ChangeNotifierProvider<UserModel>(
+              create: (context) => UserModel(snapshot.data),
+              child: const HomeScreen());
         });
   }
 }

@@ -4,6 +4,10 @@ import 'package:flutter/foundation.dart';
 class UserModel with ChangeNotifier, DiagnosticableTreeMixin {
   late User _user;
 
+  UserModel(User? data) {
+    _user = data!;
+  }
+
   User get user => _user;
 
   set user(User value) {
