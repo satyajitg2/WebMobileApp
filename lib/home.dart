@@ -121,7 +121,19 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: Column(
           children: [
-            Image.asset('dash.png'),
+            Container(
+              constraints: const BoxConstraints(
+                minWidth: 100,
+                minHeight: 100,
+                maxWidth: 550,
+                maxHeight: 750,
+              ),
+              child: Image.asset(
+                'dash.png',
+                fit: BoxFit.fill,
+                alignment: Alignment.topRight,
+              ),
+            ),
             Table(
               border: TableBorder.all(),
               columnWidths: const <int, TableColumnWidth>{
