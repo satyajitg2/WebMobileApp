@@ -1,3 +1,6 @@
 # WebMobileApp
-flutter app for web and mobile
-Updated with flutter_fire_ui and provider
+Flutter for web and mobile 
+Reusing flutter_fire_ui and social signin features for Authentication.
+Implement provider package for state management.
+Added datastax cassandra api for data as backend.
+
